@@ -78,7 +78,7 @@ export default Component.extend({
     this._super(...arguments);
 
     if (this.get('duration') !== false) {
-      run.later(this, '_destroyMessage', this.get('duration'));
+      this.timer = run.later(this, '_destroyMessage', testing ? 1 : this.get('duration'));
     }
 
     if (this.get('escapeToClose')) {
@@ -102,6 +102,10 @@ export default Component.extend({
 
     let y = this.get('top') ? 'top' : 'bottom';
     $(`#${this.get('destinationId')}`).removeClass(`md-toast-open-${y} md-toast-animating`);
+
+    if (this.timer){
+      run.cancel(this.timer);
+    }
   },
 
   swipeAction()  {
